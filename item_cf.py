@@ -25,7 +25,7 @@ def cosine_sim(user,item,user_map,item_map,bias):
 		sim = float(up) / (down1*down2) 
 		score += sim * (item_map[u][user]- gen_bias(bias,u))
 		total = total + sim
-	final = float(score)/total + gen_bias(bias,user)
+	final = float(score)/total + gen_bias(bias, item)
 	### scaling
 	if final > 5:
 		final = 5
@@ -57,7 +57,7 @@ def pearson_sim(user,item,user_map,item_map,bias):
 		sim = float(up) / (down1*down2)
 		score += sim * (user_map[u][item]- gen_bias(bias,u)) 
 		total = total + sim
-	final = float(score)/total+ gen_bias(bias,user)
+	final = float(score)/total+ gen_bias(bias, item)
 
 	if final > 5:
 		final = 5
@@ -134,6 +134,8 @@ with open('MovieLens.train','r') as f:
 		pred = cosine_sim(user,item,user_map,item_map,bias)
 		rmse += pow(rating-pred,2)
 		count += 1
+        if count % 10000 == 0:
+            print count
 print ('rmse: %f\n' % math.sqrt(rmse/count))
 			
 			
